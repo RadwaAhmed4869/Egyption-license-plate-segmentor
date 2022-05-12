@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
-txtpath = "C:\\Users\\user\\Desktop\\Project\\11_May\\csv\\"
+txtpath = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\csv\\"
 data = pd.read_csv(txtpath + '47.csv')
 hist = data['value']
 
