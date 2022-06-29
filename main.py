@@ -1,28 +1,35 @@
-from detect_edge import detect_edges
-from resize_crop import *
-from csv_hist import *
-from segment import *
-from padding import *
 import cv2
+from preprocessing import *
+from crop_canny import *
+from csv_hist import *
+from draw_fig import *
+from segment import *
+from settings import *
 
-plates_path = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\src\\sample\\"
-resized_path = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\resize\\"
-
-padding_path = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\padding\\"
-
-draw_path = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\draw_canny\\"
-canny_output = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\crop_canny\\"
-
-cropped_path = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\crop\\"
-csvpath = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\csv\\"
-outpath_hist = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\hist\\"
-segment_results = "C:\\Users\\user\\Desktop\\temp\\Egyption-license-plate-segmentor\\seg\\"
+plates_path = "C:\\Users\\user\\Desktop\\Project\\segmentor\\src\\test4\\"
 
 
-resize_crop_fn(plates_path, resized_path, crop=0, show=0)
-padding(resized_path, padding_path, show=0)
-detect_edges(padding_path, draw_path, canny_output, show=0)
-resize_crop_fn(canny_output, cropped_path, crop=1, show=0)
-# for normal mode ... invert = 0
-draw_hist(cropped_path, csvpath, outpath_hist, invert=0, show=0)
-find_peaks_fn(cropped_path, csvpath, segment_results, invert=0, show=0)
+def segment_fn(img, show_characters, draw_fig):
+    img_resized = resize_padding_fn(img, show=0)
+    roi = detect_edges(img_resized, show=0)
+    csv_values = draw_hist(roi, invert=1, show=0)
+    if draw_fig == 1:
+        fig(csv_values)
+
+    segments = []
+    find_peaks_fn(roi, csv_values, segments, invert=1, debug=0, show=show_characters)
+
+    return segments
+
+process_multi_img(0)
+
+# img = cv2.imread(plates_path + "128.jpg")
+# characters = segment_fn(img, show_characters=1, draw_fig=0)
+
+for file in os.listdir(plates_path):
+    f = os.path.join(plates_path, file)
+    set_file_name(file)
+    img = cv2.imread(f)
+    process_multi_img(1)
+    characters = segment_fn(img, show_characters=1, draw_fig=0)
+
