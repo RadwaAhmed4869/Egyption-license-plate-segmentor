@@ -90,7 +90,7 @@ def segment_invert(img, peak, segments, debug, show):
         segments.append(char)
 
 
-def find_peaks_fn(img, csv_values, segments, invert, debug, show):
+def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
 
     hist = csv_values
 
@@ -99,7 +99,7 @@ def find_peaks_fn(img, csv_values, segments, invert, debug, show):
     kernel = np.ones(kernel_size) / kernel_size
     hist = np.convolve(hist, kernel, mode='same')
 
-    indices = find_peaks(hist, prominence=8)[0]
+    indices = find_peaks(hist, prominence=promn)[0]
 
     if indices.size == 0:
         print("zero peaks")

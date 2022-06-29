@@ -2,7 +2,7 @@ import plotly.graph_objects as go
 import numpy as np
 from scipy.signal import find_peaks
 
-def fig(csv_values):
+def fig(csv_values, promn):
 
     hist = csv_values
     # print(hist)
@@ -11,7 +11,7 @@ def fig(csv_values):
     kernel = np.ones(kernel_size) / kernel_size
     hist = np.convolve(hist, kernel, mode='same')
 
-    indices = find_peaks(hist, prominence=8)[0]
+    indices = find_peaks(hist, prominence=promn)[0]
     # print(indices)
 
     fig = go.Figure()

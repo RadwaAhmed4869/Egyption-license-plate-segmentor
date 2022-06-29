@@ -5,9 +5,9 @@ from settings import *
 
 def draw_hist(img, invert, show):
     blur = cv2.GaussianBlur(img, (5,5), 0)
-    if show == 1:
-        cv2.imshow("Blur", blur)
-        cv2.waitKey(0)
+    # if show == 1:
+    #     cv2.imshow("Blur", blur)
+    #     cv2.waitKey(0)
 
     if np.mean(blur) > 197:
         its = 'bright'
@@ -20,19 +20,30 @@ def draw_hist(img, invert, show):
         cv2.waitKey(0)
 
     # create rectangular kernel for dilation
-    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
-    # # apply dilation to make regions more clear
-    # erosion = cv2.erode(thresh, rect_kern, iterations=1)
-    # cv2.imshow("Erosion", erosion)
+    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
     dilation = cv2.dilate(thresh, rect_kern, iterations=1)
     if show == 1:    
-        cv2.imshow("Dilation", dilation)
+        cv2.imshow("Dilation1", dilation)
         cv2.waitKey(0)
 
-    # os.chdir(outpath_thresh)
-    # imgname = "{}".format(file)
-    # cv2.imwrite(imgname, dilation)
+    # rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+    # erosion = cv2.erode(dilation, rect_kern, iterations=1)
+    # if show == 1:    
+    #     cv2.imshow("Erosion1", erosion)
+    #     cv2.waitKey(0)
 
+    # rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+    # dilation = cv2.dilate(erosion, rect_kern, iterations=1)
+    # if show == 1:    
+    #     cv2.imshow("Dilation2", dilation)
+    #     cv2.waitKey(0)
+
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_dilation.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, dilation)
+
+    
     binarizedImage = dilation
     # normal mode .. 0 black pixels = 1 (to be counted)
     # inverted mode .. 255 white pixels = 1
