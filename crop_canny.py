@@ -4,6 +4,8 @@ import numpy as np
 from settings import *
 
 def detect_edges(img, show):
+    # blur = cv2.medianBlur(img,5)
+    # blurred = cv2.GaussianBlur(img, (5,5), 0)
     blurred = cv2.blur(img, (5,5))
     sigma = 0.33
     med = np.median(blurred)
@@ -14,6 +16,11 @@ def detect_edges(img, show):
     if show == 1:
         cv2.imshow('edges', edges)
         cv2.waitKey(0)
+
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_edges.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, edges)
 
     ## find the non-zero min-max coords of canny
     pts = np.argwhere(edges>0)

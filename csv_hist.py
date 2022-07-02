@@ -4,7 +4,8 @@ import os
 from settings import * 
 
 def draw_hist(img, invert, show):
-    blur = cv2.GaussianBlur(img, (5,5), 0)
+    # blur = cv2.GaussianBlur(img, (5,5), 0)
+    blur = cv2.medianBlur(img,5)
     # if show == 1:
     #     cv2.imshow("Blur", blur)
     #     cv2.waitKey(0)
@@ -26,17 +27,17 @@ def draw_hist(img, invert, show):
         cv2.imshow("Dilation1", dilation)
         cv2.waitKey(0)
 
-    # rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
-    # erosion = cv2.erode(dilation, rect_kern, iterations=1)
-    # if show == 1:    
-    #     cv2.imshow("Erosion1", erosion)
-    #     cv2.waitKey(0)
+    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+    erosion = cv2.erode(dilation, rect_kern, iterations=1)
+    if show == 1:    
+        cv2.imshow("Erosion1", erosion)
+        cv2.waitKey(0)
 
-    # rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
-    # dilation = cv2.dilate(erosion, rect_kern, iterations=1)
-    # if show == 1:    
-    #     cv2.imshow("Dilation2", dilation)
-    #     cv2.waitKey(0)
+    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
+    dilation = cv2.dilate(erosion, rect_kern, iterations=1)
+    if show == 1:    
+        cv2.imshow("Dilation2", dilation)
+        cv2.waitKey(0)
 
     if(is_multi()):
         os.chdir(output_path)
