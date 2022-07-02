@@ -4,7 +4,26 @@ import numpy as np
 from settings import *
 
 def detect_edges(img, show):
-    blurred = cv2.blur(img, (5,5))
+    if show == 1:
+        cv2.imshow('org', img)
+        cv2.waitKey(0)
+
+    equalized = cv2.equalizeHist(img)
+    if show == 1:
+        cv2.imshow('equalized', equalized)
+        cv2.waitKey(0)
+
+    # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(32, 32))
+    # equalized = clahe.apply(img)
+    # if show == 1:
+    #     cv2.imshow('equalized2', equalized)
+    #     cv2.waitKey(0)
+    # blurred = cv2.medianBlur(equalized,5)
+    blurred = cv2.GaussianBlur(equalized, (5,5), 0)
+    if show == 1:
+        cv2.imshow('blur', img)
+        cv2.waitKey(0)
+    
     sigma = 0.33
     med = np.median(blurred)
     lower = int(max(0, (1.0 - sigma) * med))
@@ -24,10 +43,15 @@ def detect_edges(img, show):
     # print(y1, x1, y2, x2)
 
     ## crop the region
-    canny_cropped = img[y1:y2, x1:x2]
+    canny_cropped = equalized[y1:y2, x1:x2]
     if show == 1:
         cv2.imshow('crop_canny', canny_cropped)
         cv2.waitKey(0)
+
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_canny.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, canny_cropped)
 
     h, w = canny_cropped.shape
     # crop the 2/3 lower part of the image (region of interest)

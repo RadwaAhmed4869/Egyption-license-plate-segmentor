@@ -61,9 +61,16 @@ def segment_invert(img, peak, segments, debug, show):
                 continue
 
         char = img[int(0):, int(peak[v]+5):int(peak[v+1]-5)]
-        if (char.shape[1] <= 20):
+        if (char.shape[1] < 20):
             # print("{}_{}.jpg".format(img_name, v+1), "char width:", char.shape[1])
             continue
+
+        if np.mean(char) > 197:
+            its = 'bright'
+            char = cv2.adaptiveThreshold(char, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 201, 11)
+        else:
+            its = 'dark'
+            char = cv2.adaptiveThreshold(char, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 87, 13)
 
         if(is_multi()):
             os.chdir(char_path)
@@ -76,13 +83,9 @@ def segment_invert(img, peak, segments, debug, show):
             imgname = "{}_char_{}.jpg".format(get_file_name()[:-4], v+1)
             cv2.imwrite(imgname, char)
 
-            # os.chdir(output_path)
-            # imgname = "{}_char_{}.jpg".format(get_file_name()[:-4], v+1)
-            # cv2.imwrite(imgname, char)
-
         if show == 1:
             if(is_multi()):
-                cv2.imshow("{}_char_{}.jpg".format(get_file_name()[:-4], v+1), char)
+                cv2.imshow("{}_char_{}{}.jpg".format(get_file_name()[:-4],its, v+1), char)
                 cv2.waitKey(0)
             else:
                 cv2.imshow("char_{}".format(v+1), char)
@@ -91,6 +94,8 @@ def segment_invert(img, peak, segments, debug, show):
 
 
 def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
+    # print(img.shape)
+    height, width,= img.shape
 
     hist = csv_values
 
@@ -102,18 +107,30 @@ def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
     indices = find_peaks(hist, prominence=promn)[0]
 
     if indices.size == 0:
-        print("zero peaks")
+        print(get_file_name()[:-4], " - zero peaks")
+
+    copy = img
+    for i in indices:
+        cv2.line(copy, (i, 0), (i, int(height)), (0, 255, 0), 1)
     small_peaks = np.where(indices < 5)
     indices = np.delete(indices, small_peaks)
     # print(indices)
+
+    if show == 1:
+        cv2.imshow("lines at peaks", copy)
+        cv2.waitKey(0)
+
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_lines of peaks.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, copy)
+
 
 
 # start and end lists to save the start and end indices
     startix = []
     endix = []
 
-    # print(img.shape)
-    height, width,= img.shape
     lowest_value = 2.5
 
     if invert == 0:
@@ -162,5 +179,6 @@ def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
     if invert == 1:
         if debug == 1:
             # print("w=", img.shape[1])
+            print(get_file_name())
             print("Peak indices: ", list(indices))
         segment_invert(img, indices, segments, debug, show)
