@@ -44,9 +44,9 @@ def resize_padding_fn(img, show):
 
     result = img
 
-    if(is_multi()):
-        os.chdir(output_path)
-        imgname = "{}_padding.jpg".format(get_file_name()[:-4])
-        cv2.imwrite(imgname, result)
+    # if(is_multi()):
+    #     os.chdir(output_path)
+    #     imgname = "{}_padding.jpg".format(get_file_name()[:-4])
+    #     cv2.imwrite(imgname, result)
 
     return result
