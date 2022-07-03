@@ -21,7 +21,7 @@ def draw_hist(img, invert, show):
         cv2.waitKey(0)
 
     # create rectangular kernel for dilation
-    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (7,7))
+    rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
     dilation = cv2.dilate(thresh, rect_kern, iterations=1)
     if show == 1:    
         cv2.imshow("Dilation1", dilation)
@@ -39,10 +39,10 @@ def draw_hist(img, invert, show):
         cv2.imshow("Dilation2", dilation)
         cv2.waitKey(0)
 
-    # if(is_multi()):
-    #     os.chdir(output_path)
-    #     imgname = "{}_dilation.jpg".format(get_file_name()[:-4])
-    #     cv2.imwrite(imgname, dilation)
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_dilation.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, dilation)
 
     
     binarizedImage = dilation
@@ -81,10 +81,11 @@ def draw_hist(img, invert, show):
         # print(int(vertical_projection[column]*height/width))
 
     hist = cv2.flip(blankImage, 0)
-    # if(is_multi()):
-    #     os.chdir(output_path)
-    #     imgname = "{}_hist.jpg".format(get_file_name()[:-4])
-    #     cv2.imwrite(imgname, hist)
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_hist.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, hist)
+        
     # sum_columns = np.sum(hist, axis=0)
     # print(values)
     # print(file)

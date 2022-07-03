@@ -6,7 +6,7 @@ from draw_fig import *
 from segment import *
 from settings import *
 
-plates_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\src\\LP7\\"
+plates_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\src\\test\\"
 
 
 def segment_fn(img, show_characters, draw_fig):
@@ -18,7 +18,7 @@ def segment_fn(img, show_characters, draw_fig):
         fig(csv_values, promn)
 
     segments = []
-    # find_peaks_fn(roi, csv_values, segments, promn, invert=1, debug=0, show=show_characters)
+    find_peaks_fn(roi, csv_values, segments, promn, invert=1, debug=0, show=show_characters)
 
     return segments
 

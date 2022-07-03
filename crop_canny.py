@@ -43,9 +43,9 @@ def detect_edges(img, show):
         cv2.imshow('roi', roi)
         cv2.waitKey(0)
 
-    # if(is_multi()):
-    #     os.chdir(output_path)
-    #     imgname = "{}_roi.jpg".format(get_file_name()[:-4])
-    #     cv2.imwrite(imgname, roi)
+    if(is_multi()):
+        os.chdir(output_path)
+        imgname = "{}_roi.jpg".format(get_file_name()[:-4])
+        cv2.imwrite(imgname, roi)
         
     return roi
