@@ -46,10 +46,10 @@ def segment(img, start, peak, end, segments, show):
         # segments = np.append(segments, img[int(0):, int(start[v]-s):int(end[v]+7)], axis=0)
 
 def segment_invert(img, peak, segments, debug, show):
-
+    height, width = img.shape
+    if debug == 1:
+        print("ROI wth = {},".format(width))
     for v in range(len(peak)-1):
-
-        height, width = img.shape
         # print(final_width-initial_width)
         # if (final_width-initial_width <= 32):
         #     print("less than")
@@ -57,12 +57,16 @@ def segment_invert(img, peak, segments, debug, show):
             # print("in center 1")
             if (peak[v] >= width/2.4):
                 if debug == 1:
-                    print("img wth = {},".format(width), "center line deleted")
+                    print(get_file_name()[:-4], "ROI wth = {},".format(width), "center line deleted")
+                    print("{}_char_{}.jpg".format(get_file_name()[:-4], v+1))
                 continue
 
         char = img[int(0):, int(peak[v]+5):int(peak[v+1]-5)]
-        if (char.shape[1] < 15):
-            # print("{}_{}.jpg".format(img_name, v+1), "char width:", char.shape[1])
+        # print(char.shape[1])
+
+        if (char.shape[1] < 2):
+            if debug == 1:
+                print("{}_{}.jpg".format(get_file_name()[:-4], v+1), "char width:", char.shape[1])
             continue
 
         if(is_multi()):

@@ -18,5 +18,5 @@ def get_file_name():
     return file_name
 
 
-output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\LP10_out"
-char_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\10"
+output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\all_out"
+char_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\all_char"

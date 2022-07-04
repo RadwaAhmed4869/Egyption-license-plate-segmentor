@@ -22,4 +22,4 @@
 #		choose the roi depending of 3 IFs
         if area > 8000 and (w > h) and center_y > height/2:
 
-#	2.
+#	2. 
