@@ -61,7 +61,7 @@ def segment_invert(img, peak, segments, debug, show):
                 continue
 
         char = img[int(0):, int(peak[v]+5):int(peak[v+1]-5)]
-        if (char.shape[1] <= 20):
+        if (char.shape[1] < 15):
             # print("{}_{}.jpg".format(img_name, v+1), "char width:", char.shape[1])
             continue
 
@@ -104,7 +104,8 @@ def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
     for i in indices:
         cv2.line(copy, (i, 0), (i, int(height)), (0, 255, 0), 1)
 
-    small_peaks = np.where(indices < 5)
+    # print(indices)
+    small_peaks = np.where(indices < 2)
     indices = np.delete(indices, small_peaks)
     # print(indices)
 

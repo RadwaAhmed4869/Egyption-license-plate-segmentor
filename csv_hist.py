@@ -6,9 +6,9 @@ from settings import *
 def draw_hist(img, invert, show):
     # blur = cv2.GaussianBlur(img, (5,5), 0)
     blur = cv2.medianBlur(img,5)
-    # if show == 1:
-    #     cv2.imshow("Blur", blur)
-    #     cv2.waitKey(0)
+    if show == 1:
+        cv2.imshow("Blur", blur)
+        cv2.waitKey(0)
 
     if np.mean(blur) > 197:
         its = 'bright'
@@ -30,7 +30,7 @@ def draw_hist(img, invert, show):
     rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
     erosion = cv2.erode(dilation, rect_kern, iterations=1)
     if show == 1:    
-        cv2.imshow("Erosion1", erosion)
+        cv2.imshow("Erosion for hist", erosion)
         cv2.waitKey(0)
 
     rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (3,3))
@@ -41,7 +41,7 @@ def draw_hist(img, invert, show):
 
     if(is_multi()):
         os.chdir(output_path)
-        imgname = "{}_dilation.jpg".format(get_file_name()[:-4])
+        imgname = "{}_dilation2.jpg".format(get_file_name()[:-4])
         cv2.imwrite(imgname, dilation)
 
     
