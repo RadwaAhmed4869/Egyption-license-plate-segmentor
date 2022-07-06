@@ -7,7 +7,7 @@ from draw_fig import *
 from segment import *
 from settings import *
 
-str = "LP8\\"
+str = "H\\"
 plates_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\src\\" + str
 
 
@@ -98,16 +98,19 @@ def segment_fn(img, show_characters, draw_fig):
     print(get_file_name()[:-4])
     # print("h: {}, w: {}".format( h, w))
 
-    # if w < 54:
+    if w < 54:
+        print("< 54")
     #     return segments
 
-    # if w >= 237:
+    if w >= 237:
+        print(">= 237")
     #     return segments
 
     ratio = w/h
     print("h: {}, w: {}, ratio: {}".format( h, w, ratio))
 
-    # if ratio <= 1.6:
+    if ratio <= 1.6:
+        print("< 1.6")
     #     return segments
 
     roi_resized = image_resize(roi, width = 480)
