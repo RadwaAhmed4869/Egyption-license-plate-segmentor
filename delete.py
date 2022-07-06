@@ -1,6 +1,6 @@
 import os
 
-output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\outputs\\"
+output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\LP8_out\\"
 
 paths = [output_path]
 for path in paths:

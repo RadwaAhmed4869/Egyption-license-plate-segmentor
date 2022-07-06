@@ -60,8 +60,8 @@ def segment_invert(img, peak, segments, debug, show):
                     print(get_file_name()[:-4], "ROI wth = {},".format(width), "center line deleted")
                     print("{}_char_{}.jpg".format(get_file_name()[:-4], v+1))
                 continue
-
-        char = img[int(0):, int(peak[v]+5):int(peak[v+1]-5)]
+        p = 0
+        char = img[int(0):, int(peak[v]+p):int(peak[v+1]-p)]
         # print(char.shape[1])
 
         if (char.shape[1] < 2):
