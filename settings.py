@@ -18,8 +18,8 @@ def get_file_name():
     return file_name
 
 
-output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\LPs_output"
-char_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\LPs_output"
+output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\8"
+char_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\8"
 
 
 # output_path = "C:\\Users\\user\\Desktop\\Project\\macathon3_output"
