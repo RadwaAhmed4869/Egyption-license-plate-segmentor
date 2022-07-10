@@ -66,11 +66,8 @@ def draw_hist(img, invert, show):
     # print(vertical_projection)
 
     height, width = binarizedImage.shape
-    # print('width : ', width)
-    # print('height : ', height)
 
     blankImage = np.zeros((height, width, 3), np.uint8)
-    # print(blankImage)
 
     values = []
 
@@ -80,15 +77,18 @@ def draw_hist(img, invert, show):
         values.append(int(vertical_projection[column]*height/width))
         # print(int(vertical_projection[column]*height/width))
 
-    hist = cv2.flip(blankImage, 0)
-    if(is_multi()):
-        os.chdir(output_path)
-        imgname = "{}_hist.jpg".format(get_file_name()[:-4])
-        cv2.imwrite(imgname, hist)
+
+    # save VPP
+    # hist = cv2.flip(blankImage, 0)
+    # if(is_multi()):
+    #     os.chdir(output_path)
+    #     imgname = "{}_hist.jpg".format(get_file_name()[:-4])
+    #     cv2.imwrite(imgname, hist)
         
     # sum_columns = np.sum(hist, axis=0)
     # print(values)
     # print(file)
+
 
 # write histogram values to a csv file in folder 
     # write_csv_values(csvpath, file, values)

@@ -8,43 +8,6 @@ import cv2
 import numpy as np
 from settings import *
 
-# function to segment the image
-# takes 3 parameters: the image, list of start indecies, list of end indices
-def segment(img, start, peak, end, segments, show):
-    for v in range(len(start)):
-        # print(start[v], end[v])
-
-# if the start index is less than 5, crop from the start index, otherwise move -5 pixels
-# I had to do this because one image started from 3
-        if start[v] < 7:
-            s = 0
-        else:
-            s = 7
-
-        initial_width = int(start[v]-s)
-        final_width = int(end[v]+7)
-        # print(initial_width, final_width)
-        char = img[int(0):, initial_width:final_width]
-
-        height, width = img.shape
-        # print("WIDTH: ", width)
-        # print("###")
-        # print(final_width-initial_width)
-        # if (final_width-initial_width <= 32):
-        #     print("less than")
-        if (peak[v] <= width/1.9):
-            # print("in center 1")
-            if (peak[v] >= width/2.19):
-                print("line deleted!")
-                continue
-    
-        if show == 1:
-            cv2.imshow("char_{}".format(v+1), char)
-            cv2.waitKey(0)
-        
-        segments.append(char)
-        # segments = np.append(segments, img[int(0):, int(start[v]-s):int(end[v]+7)], axis=0)
-
 def segment_invert(img, peak, segments, debug, show):
     height, width = img.shape
     if debug == 1:
@@ -89,7 +52,6 @@ def segment_invert(img, peak, segments, debug, show):
                 cv2.waitKey(0)
         segments.append(char)
 
-
 def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
     height, width,= img.shape
     hist = csv_values
@@ -102,7 +64,10 @@ def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
     indices = find_peaks(hist, prominence=promn)[0]
 
     if indices.size == 0:
-        print(get_file_name()[:-4], " - zero peaks")
+        if is_multi:
+            print(get_file_name()[:-4], " - zero peaks")
+        else:
+            print("zero peaks")
 
     copy = img
     for i in indices:
@@ -121,56 +86,6 @@ def find_peaks_fn(img, csv_values, segments, promn, invert, debug, show):
         os.chdir(output_path)
         imgname = "{}_lines of peaks.jpg".format(get_file_name()[:-4])
         cv2.imwrite(imgname, copy)
-
-# start and end lists to save the start and end indices
-    startix = []
-    endix = []
-
-    # print(img.shape)
-    lowest_value = 2.5
-
-    if invert == 0:
-        for index in indices:
-    # get the start index
-            temp_index = index-2
-            while(temp_index) > 0:
-                if temp_index <= 2:
-                    startix.append(1)
-                    break
-
-                elif hist[temp_index] < lowest_value:
-                    startix.append(temp_index)
-                    break
-                else:
-                    temp_index = temp_index-2
-    #get the end index
-            temp_index = index+2
-            while(temp_index) < width:
-                if temp_index >= width-2:
-                    endix.append(width-1)
-                    break
-
-                elif hist[temp_index] < lowest_value:
-                    endix.append(temp_index)
-                    break
-                else:
-                    temp_index = temp_index+2
-
-    
-    if invert == 0:
-        if debug == 1:
-            print("Start indices: ", startix)
-            print("Peak indices: ", list(indices))
-            print("End indices: ", endix)
-
-        if(len(startix) != len(indices) or len(indices) != len(endix) or len(startix) != len(endix)):
-            print("not matching dim")
-        else:
-            # print('match!')
-            # print(csvfile[:len(csvfile)-4]+'.jpg')
-
-    # segment the image only if the indices match
-            segment(img, startix, indices, endix, segments, show)
 
     if invert == 1:
         if debug == 1:
