@@ -7,7 +7,7 @@ from draw_fig import *
 from segment import *
 from settings import *
 
-str = "H\\"
+str = "LPs\\"
 plates_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\src\\" + str
 
 
@@ -40,7 +40,7 @@ def cnt_fn(img, debug, show):
     blur = cv2.blur(img, (5,5))
     # blur = cv2.GaussianBlur(img, (5,5), 0)
     thresh = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
-    k = 5
+    k = 7
     rect_kern = cv2.getStructuringElement(cv2.MORPH_RECT, (k,k))
     erosion = cv2.erode(thresh, rect_kern, iterations=1)
     
@@ -92,7 +92,7 @@ def segment_fn(img, show_characters, draw_fig):
     # img_resized = image_resize(img, width = 480)
     # cv2.imshow('resize', img_resized)
     # cv2.waitKey(0)
-    roi = cnt_fn(img, debug=1, show=0)
+    roi = cnt_fn(img, debug=1, show=1)
     h, w = roi.shape
     print("---------------------------------")
     print(get_file_name()[:-4])
@@ -119,7 +119,7 @@ def segment_fn(img, show_characters, draw_fig):
         cv2.imshow('roi_resized', roi_resized)
         cv2.waitKey(0)
 
-    csv_values = draw_hist(roi_resized, invert=1, show=0)
+    csv_values = draw_hist(roi_resized, invert=1, show=1)
     promn = 8
     if draw_fig == 1:
         fig(csv_values, promn)
@@ -128,26 +128,24 @@ def segment_fn(img, show_characters, draw_fig):
 
     return segments
 
-# process_multi_img(0)
-# image_name = "151.jpg"
-# img = cv2.imread(plates_path + image_name)
-# set_file_name(image_name)
-# cv2.imshow('org', img)
-# cv2.waitKey(0)
-# characters = segment_fn(img, show_characters=1, draw_fig=0)
-# if len(characters) == 0:
-#     print("### skipped ###")
+process_multi_img(0)
+image_name = "66.jpg"
+img = cv2.imread(plates_path + image_name)
+set_file_name(image_name)
+characters = segment_fn(img, show_characters=0, draw_fig=0)
+if len(characters) == 0:
+    print("This frame was skipped")
 
-for file in os.listdir(plates_path):
-    f = os.path.join(plates_path, file)
-    set_file_name(file)
-    # print("----------------------------------------------")
-    # print(file)
-    img = cv2.imread(f)
-    # cv2.imshow('org', img)
-    # cv2.waitKey(0)
-    # print(file, "w/h: ", img.shape[1]/img.shape[0])
-    process_multi_img(1)
-    characters = segment_fn(img, show_characters=0, draw_fig=0)
-    if len(characters) == 0:
-        print("### skipped ###")
+# process_multi_img(1)
+# for file in os.listdir(plates_path):
+#     f = os.path.join(plates_path, file)
+#     set_file_name(file)
+#     # print("----------------------------------------------")
+#     # print(file)
+#     img = cv2.imread(f)
+#     # cv2.imshow('org', img)
+#     # cv2.waitKey(0)
+#     # print(file, "w/h: ", img.shape[1]/img.shape[0])
+#     characters = segment_fn(img, show_characters=0, draw_fig=0)
+#     if len(characters) == 0:
+#         print("### skipped ###")

@@ -3,6 +3,8 @@ import os
 import random
 import numpy as np
 
+# augment.py was used to augment letter H drawn by illustrator 
+
 image_name = "Artboard1-20.jpg"
 img_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\src\H\\1x\\"
 output_path = "C:\\Users\\user\\Desktop\\Project\\Egyption-license-plate-segmentor\\out\\"
